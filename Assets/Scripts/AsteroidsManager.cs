@@ -12,16 +12,19 @@ public class AsteroidsManager : MonoBehaviour {
         public bool isOccupied;
     };
     public static AsteroidsManager Instance { get; private set; }
-
     public float asteroidsSpeed = 3.0f;
     public Vector3 halfExtents = new Vector3(8.8f, 0, 6.6f);
     public float playableGridCellSize = 2.2f;
     PlayableGridCell[,] playableAreaGrid = null;
     public bool drawDebugGrid = false;
+    public GameObject asteroidPrefab;
+    public float asteroidsSpawnDelay = 15f;
+    public int maxAsteroidsCount = 4;
 
     // List of all asteroids objects in the scene
     List<GameObject> asteroids = new List<GameObject>();
     GameObject playerShip = null;
+    private float nextAsteroidSpawnTime = 0f;
 
     private void Awake()
     {
@@ -34,7 +37,6 @@ public class AsteroidsManager : MonoBehaviour {
         {
             Destroy(gameObject);
         }
-
     }
 
     private void Start()
@@ -74,13 +76,17 @@ public class AsteroidsManager : MonoBehaviour {
             {
                 if (asteroid.transform.position[i] < -halfExtents[i] || asteroid.transform.position[i] > halfExtents[i])
                 {
-                    RandomizeAsteroidTransform(asteroid);
-                    break;
+                    Vector3 pos = asteroid.transform.position;
+                    pos[i] = -(pos[i] < 0 ? pos[i] + 2 : pos[i] - 2);
+                    asteroid.transform.position = pos;
+               
                 }
             }
             MarkOccupiedCells(asteroid);
         }
-        MarkOccupiedCells(playerShip);
+        if(playerShip)
+            MarkOccupiedCells(playerShip);
+        SpawnNewAsteroids();
 	}
     void OnDrawGizmos()
     {
@@ -172,6 +178,17 @@ public class AsteroidsManager : MonoBehaviour {
             PlayableGridCell chosenCell = freeCells[chosenCellIndex];
             Vector3 newPosition = chosenCell.cellBounds.center;
             asteroid.GetComponent<AsteroidController>().RadomizeDirection(newPosition);
+        }
+    }
+
+    private void SpawnNewAsteroids()
+    {
+        if (asteroids.Count < maxAsteroidsCount &&
+            Time.time > nextAsteroidSpawnTime)
+        {
+            nextAsteroidSpawnTime = Time.time + asteroidsSpawnDelay;
+            GameObject newAsteroid = Instantiate(asteroidPrefab);
+            RandomizeAsteroidTransform(newAsteroid);
         }
     }
 
