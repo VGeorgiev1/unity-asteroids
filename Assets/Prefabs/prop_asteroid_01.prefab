@@ -127,10 +127,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7675b79a7a9a45e4a879e1854e83aca8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  healthBar: {fileID: 0}
   health: 50
+  toEndGameOnDeath: 0
   splitChunksCount: 0
   chunkPrefab: {fileID: 0}
   spawnOffset: {x: 0, y: 0, z: 0}
+  deadthAnimation: {fileID: 100004, guid: 2857e183f4cd3df4e9096e5b578bd32f, type: 2}
 --- !u!114 &114798533786329854
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -144,6 +147,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   tagToDamage: Player
+  hitAnimation: {fileID: 1803824700397898, guid: ac1b8912f369e8946b19c3aa510e7cd7,
+    type: 2}
 --- !u!135 &135763485626776020
 SphereCollider:
   m_ObjectHideFlags: 1

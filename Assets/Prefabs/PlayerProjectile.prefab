@@ -143,6 +143,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 34
   tagToDamage: Enemy
+  hitAnimation: {fileID: 1803824700397898, guid: ac1b8912f369e8946b19c3aa510e7cd7,
+    type: 2}
 --- !u!114 &114812316116396112
 MonoBehaviour:
   m_ObjectHideFlags: 1

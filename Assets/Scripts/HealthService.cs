@@ -2,23 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 public class HealthService : MonoBehaviour {
-
+    public Text healthBar;
     public int health = 100;
     protected int currentHealth = 100;
-
+    public bool toEndGameOnDeath = false;
     public uint splitChunksCount = 0;
     public GameObject chunkPrefab;
     public Vector3 spawnOffset;
-    
+    public GameObject deadthAnimation;
     protected virtual void Start () {
         currentHealth = health;
-	}
+        healthBar.text = currentHealth.ToString();
+
+    }
 
     public void DealDamage(int damage)
     {
         currentHealth -= damage;
-        
+        if (toEndGameOnDeath) {
+            healthBar.text = currentHealth.ToString();
+        }
         if (currentHealth <= 0)
         {
             OnDeath();
@@ -41,18 +46,13 @@ public class HealthService : MonoBehaviour {
                 Instantiate(chunkPrefab, spawnPosition, gameObject.transform.rotation);
             }
         }
-        SceneManager.LoadScene("EndMenu");
+        Instantiate(deadthAnimation, transform.position, transform.rotation);
         Destroy(gameObject);
-    }
-    void OnGUI()
-    {
-        int w = Screen.width, h = Screen.height;
-        GUIStyle style = new GUIStyle();
-        Rect rect = new Rect(0, 0, w, h * 2 / 100);
-        style.alignment = TextAnchor.UpperLeft;
-        style.fontSize = h * 2 / 25;
-        style.normal.textColor = new Color(1, 1, 1, 1f);
-        string fpsText = string.Format("{0}", currentHealth);
-        GUI.Label(rect, fpsText, style);
+        Destroy(deadthAnimation);
+        if (toEndGameOnDeath)
+        {
+            SceneManager.LoadScene("EndMenu");
+        }
+       
     }
 }

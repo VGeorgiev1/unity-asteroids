@@ -1,12 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour {
     public float speed = 0.2f;
     public float rotationSpeed = 180f;
     public Vector3 halfExtents = new Vector3(6, 0, 4);
-
+   
     private void Start()
     {
         AsteroidsManager.Instance.RegisterPlayer(gameObject);
